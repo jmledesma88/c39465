@@ -461,28 +461,6 @@ alert('Bienvenido a Juancho Pancho');
 const cantPanchos = parseInt(prompt('Para comenzar. \n¿Cuantos panchos va a querer?'));
 
 
-// // Bebidas
-
-// const bebidas = prompt('¿Los va a querer acompañar con bebidas? \nPor favor indique SI, NO o, en su defecto indique cuantos.').toLowerCase();
-// let cantBebidas;
-// let bebidasExtra;
-
-// if(bebidas==='si'){
-//     cantBebidas = cantPanchos;
-// } else if(bebidas==='no'){
-//     cantBebidas = 0;
-// } else{
-//     if(bebidas>=0 && bebidas<=cantPanchos){
-//         cantBebidas = parseInt(bebidas);
-
-//     } else if (bebidas>cantPanchos){
-//         cantBebidas = cantPanchos;
-//         bebidasExtra = bebidas-cantPanchos;
-//         alert('No puede llevar más bebidas de acompañamient que la cantidad de panchos indicada. \nDeberá abonar las '+bebidasExtra+' excedentes por separado.');
-//     } else{
-//         alert('Valor invalido, por favor refresque el sitio y vuelva a intentarlo.');
-//     }
-// }
 
 
 // Papas
@@ -492,14 +470,14 @@ let cantPapas;
 let papasExtra;
 
 while(papas!=='si' && papas!=='no'){
-        alert('El valor ingresado no es válido, pruebe nuevamente.');
-        papas = prompt('¿Los va a querer acompañar con papas fritas? \nPor favor indique SI o NO:').toLowerCase();
+    alert('El valor ingresado no es válido, pruebe nuevamente.');
+    papas = prompt('¿Los va a querer acompañar con papas fritas? \nPor favor indique SI o NO:').toLowerCase();
 }
 
 if(papas==='si'){
     cantPapas = parseInt(prompt('¿Cuantas acompañamientos de papas fritas va a querer?'));
     if(cantPapas>cantPanchos){
-        papasExtra = papas-cantPanchos;
+        papasExtra = cantPapas-cantPanchos;
         cantPapas = cantPanchos;
         alert('No puede llevar más papas fritas de acompañamiento que la cantidad de panchos indicada. \nDeberá abonar las '+papasExtra+' excedentes por separado.');
     }
@@ -508,8 +486,31 @@ if(papas==='si'){
 } 
 
 console.log(cantPanchos);
-// console.log(cantBebidas);
 console.log(cantPapas);
 if(papasExtra>0){
-    console.log(papasExtra)
+    console.log(papasExtra);
 }
+
+// // Bebidas
+
+// const bebidas = prompt('¿Los va a querer acompañar con bebidas? \nPor favor indique SI, NO o, en su defecto indique cuantos.').toLowerCase();
+// let cantBebidas;
+// let bebidasExtra;
+
+// if(bebidas==='si'){
+//         cantBebidas = cantPanchos;
+//     } else if(bebidas==='no'){
+//             cantBebidas = 0;
+//         } else{
+//                 if(bebidas>=0 && bebidas<=cantPanchos){
+//                         cantBebidas = parseInt(bebidas);
+                
+//                     } else if (bebidas>cantPanchos){
+//         cantBebidas = cantPanchos;
+//         bebidasExtra = bebidas-cantPanchos;
+//         alert('No puede llevar más bebidas de acompañamient que la cantidad de panchos indicada. \nDeberá abonar las '+bebidasExtra+' excedentes por separado.');
+//     } else{
+//             alert('Valor invalido, por favor refresque el sitio y vuelva a intentarlo.');
+//         }
+// }
+// console.log(cantBebidas);
