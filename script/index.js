@@ -8,6 +8,8 @@ alert('Bienvenido a Juancho Pancho');
 alert('Nuestros precios son:\nPancho    €3\nPancho + Papas Fritas    €4.5\nPancho + Bebida    €4\nPancho Combo (c/ Papas + Bebida)    €5\nPorción de papas fritas    €2\nBebida    €1.5');
 const nombre = prompt('Para comenzar el pedido ingrese su nombre:');
 
+console.log('Datos de control:');
+console.log(nombre);
 
 
 // Panchos
@@ -109,34 +111,35 @@ if(cantPanchos>cantPapas && cantPanchos>cantBebidas){
 
 // Facturación
 
+console.log('----------------------------')
 console.log('Pedido final a nombre de '+nombre+':')
 alert('Su pedido es:');
-if(panchoSolo>0){
-    console.log('Panchos solos: '+panchoSolo);
-    alert('Panchos solos: '+panchoSolo);
+if(descuentoCombo>0){
+    console.log('Panchos en Combo --- '+descuentoCombo);
+    alert('Panchos en combo (papas + bebida): '+descuentoCombo);
 }
 if(panchoPapas>0){
-    console.log('Panchos con papas: '+panchoPapas);
+    console.log('Panchos con papas --- '+panchoPapas);
     alert('Panchos con papas: '+panchoPapas);
 }
 if(panchoBebida>0){
-    console.log('Panchos con bebida: '+panchoBebida);
+    console.log('Panchos con bebida --- '+panchoBebida);
     alert('Panchos con bebida: '+panchoBebida);
 }
-if(descuentoCombo>0){
-    console.log('Panchos en Combo: '+descuentoCombo);
-    alert('Panchos en combo (papas + bebida): '+descuentoCombo);
+if(panchoSolo>0){
+    console.log('Panchos solos --- '+panchoSolo);
+    alert('Panchos solos: '+panchoSolo);
 }
 if(papasExtra>0){
-    console.log(papasExtra);
+    console.log('Porciones de papas extra --- '+papasExtra);
     alert('Porciones de papas fritas extra: '+papasExtra);
 }
 if(bebidasExtra>0){
-    console.log(bebidasExtra);
+    console.log('Bebidas extra --- '+bebidasExtra);
     alert('Bebidas extra: '+bebidasExtra);
 }
 
 const precioFinal = (panchoSolo*3+panchoPapas*4.5+panchoBebida*4+descuentoCombo*5+papasExtra*2+bebidasExtra*1.5);
-console.log('Precio final: '+precioFinal);
+console.log('Total compra = '+precioFinal);
 
 alert('El total a pagar es €'+precioFinal+'\n\nUn placer haberle atendido, '+nombre+'. Aguarde a ser llamado para recoger su pedido.\n\n¡Hasta la próxima!');
