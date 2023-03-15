@@ -1,3 +1,14 @@
-*{
-    background-color: gray;
-}
+* {
+  margin: 0%;
+  padding: 0%;
+  background-color: whitesmoke;
+  width: 100vw; }
+
+.col {
+  padding: 0%; }
+
+.prod {
+  max-width: 300px; }
+
+.card-text {
+  max-width: 300px; }
