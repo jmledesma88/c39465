@@ -145,36 +145,55 @@
 // alert('El total a pagar es €'+precioFinal+'\n\nUn placer haberle atendido, '+nombre+'. Aguarde a ser llamado para recoger su pedido.\n\n¡Hasta la próxima!');
 
 
-// Creo la clase producto
+// Creo clase producto
 
-class Product{
-    constructor(id,name,desctription,price){
-        this.id=id,
-        this.name=name,
-        this.desctription=desctription,
-        this.price=price
+class Product {
+    constructor(id, name, desctription, price, img) {
+        this.id = id,
+            this.name = name,
+            this.desctription = desctription,
+            this.price = price,
+            this.img = img
     }
 }
 
-// Crear prods
+// Productos
 
-const panchoSolo = new Product(1,'Pancho Solo','¿Qué más decir? Un pancho, clásico, como el de toda la vida.',3);
-const panchoPapas = new Product(2,'Pancho con papas fritas','El clásico de siempre acompañado de sus mejores amigas, las fritas.',4.5);
-const panchoBebida = new Product(3,'Pancho con bebida','El clásico de siemrpe y la herramienta ideal para bajarlo.',4);
-const panchoCombo = new Product(4,'Pancho Combo','Para los que quieren más, mandale combo.',5);
+const panchoSolo = new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3);
+const panchoPapas = new Product(2, 'Pancho con papas fritas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5);
+const panchoBebida = new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4);
+const panchoCombo = new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5);
 
-// Array prods
 
-const products = [panchoSolo,panchoPapas,panchoBebida,panchoCombo];
+// Array productos
+
+const products = [panchoSolo, panchoPapas, panchoBebida, panchoCombo];
+
 
 // Agrego cards al menú
 
 const selectNode = document.querySelector('#menu');
-products.forEach((prod)=>{
+products.forEach((prod) => {
     const prodCard = document.createElement('div');
-    prodCard.innerText = `${prod.name}`;
-    prodCard.setAttribute('id',`${prod.id}`);
-    prodCard.setAttribute('class','card prod');
+    prodCard.setAttribute('class','col');
+    prodCard.innerHTML = 
+    `<div class="card prod">
+        <img src="./assets/img/img_prod${prod.id}.webp" class="card-img-top" alt="${prod.name}">
+        <div class="card-body">
+            <h5 class="card-title">${prod.name}</h5>
+            <p class="card-text">Precio: €${prod.price}</p>
+            <p class="card-text fst-italic">${prod.desctription}</p>
+            <a id="select_prod_${prod.id}" class="btn btn-outline-primary">Agregar al carrito</a>
+        </div>
+    </div>`                    
     selectNode.append(prodCard);
-
 })
+
+
+// Creo carrito
+
+const cart = [];
+
+
+// Añadir producto al carrito
+
