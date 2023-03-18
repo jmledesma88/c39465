@@ -193,10 +193,10 @@ class Product {
 
 // Productos
 
-const panchoSolo = new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3);
-const panchoPapas = new Product(2, 'Pancho con papas fritas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5);
-const panchoBebida = new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4);
-const panchoCombo = new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5);
+const panchoSolo = new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3, 0);
+const panchoPapas = new Product(2, 'Pancho con papas fritas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5, 0);
+const panchoBebida = new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4, 0);
+const panchoCombo = new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5, 0);
 
 
 // Array productos
@@ -208,6 +208,8 @@ const products = [panchoSolo, panchoPapas, panchoBebida, panchoCombo];
 // Agrego cards al menú
 
 const selectNode = document.querySelector('#menu');
+
+let i = 0;
 
 products.forEach((prod) => {
     const prodCard = document.createElement('div');
@@ -227,32 +229,39 @@ products.forEach((prod) => {
     // intento de resumir cógigo de forma dinámica
     let qty = `prod${prod.id}q`;
     console.log(qty);
-    // eval(qty + "= parseInt('0')");
+    eval(qty + "= parseInt('0')");
+    // Genero el string del ID y guardo el botón en una const
     const addProdId = `#add_prod_${prod.id}`;
     const addProdBtn = document.querySelector(`${addProdId}`);
+
+    // Genero el string del ID y guardo el párrafo en una const
     const prodQtyId = `#quantity${prod.id}`;
     const nodeQty = document.querySelector(`${prodQtyId}`);
+
     let qP = `q${prod.id}p`;
     // eval(qP + "= 0");
-    eval(qP + "= document.createElement('p')");
+    eval(qP + "= document.createElement('div')");
     eval(qP+".setAttribute('class','card-text')");
     console.log(addProdId);
     console.log(addProdBtn);
     console.log(prodQtyId);
     console.log(nodeQty);
     console.log(qP);
-    let i = 0;
     addProdBtn.onclick = ()=>{
-        i = i+1;
-        console.log(`Cantidad de Pancho solo: ${i}`)
-        eval(qty + `= ${i}`);
-        // if(i>0){
-        //     eval(qP + '.innerHTML = `<div>Cantidad de Pancho solo: ${prod1q}<button id="reset_prod1q" type="button" class="btn-close"></button></div>`;');
-        //     nodeQty.append(qP);
-        // }
+        prod.demand = prod.demand + 1;
+        console.log(`la demanda del prod ${prod.name} es: ${prod.demand}`);
+        if(prod.demand>0){
+            eval(qP+'.innerHTML = `<div>Cantidad de ${prod.name}: ${prod.demand}<button id="reset_prod_${prod.id}" type="button" class="btn-close"></button></div>`');
+            nodeQty.append(eval(qP));
+            const resetQtyId = `#reset_prod_${prod.id}`;
+            const resetQtyBtn = document.querySelector(`${resetQtyId}`);
+            resetQtyBtn.onclick = ()=>{
+                prod.demand = 0;
+                console.log(`Demanda de ${prod.name} reseteada a ${prod.demand}`);
+                eval(qP+`.remove()`);
+            }
+        }
     }
-
-
 })
 
 
@@ -291,63 +300,63 @@ products.forEach((prod) => {
 // q4p.setAttribute('class','card-text');
 
 
-addProdBtn1.onclick = ()=>{
-    prod1q = prod1q + 1;     
-    console.log(`Cantidad de Pancho solo: ${prod1q}`)
-    if(prod1q>0){
-        q1p.innerHTML = `<div>Cantidad de Pancho solo: ${prod1q}<button id="reset_prod1q" type="button" class="btn-close"></button></div>`;
-        nodeQ1.append(q1p);
-        const reset_prod1q = document.querySelector('#reset_prod1q');
-        reset_prod1q.onclick = ()=>{
-            prod1q = 0;
-            console.log(prod1q);
-            q1p.remove();
-        }        
-    }
-}
+// addProdBtn1.onclick = ()=>{
+//     prod1q = prod1q + 1;     
+//     console.log(`Cantidad de Pancho solo: ${prod1q}`)
+//     if(prod1q>0){
+//         q1p.innerHTML = `<div>Cantidad de Pancho solo: ${prod1q}<button id="reset_prod1q" type="button" class="btn-close"></button></div>`;
+//         nodeQ1.append(q1p);
+//         const reset_prod1q = document.querySelector('#reset_prod1q');
+//         reset_prod1q.onclick = ()=>{
+//             prod1q = 0;
+//             console.log(prod1q);
+//             q1p.remove();
+//         }        
+//     }
+// }
 
-addProdBtn2.onclick = ()=>{
-    prod2q = prod2q + 1;     
-    console.log(`Cantidad de Pancho con papas fritas: ${prod2q}`);
-    if(prod2q>0){
-        q2p.innerHTML = `<div>Cantidad de Pancho con papas fritas: ${prod2q}<button id="reset_prod2q" type="button" class="btn-close"></button></div>`;
-        nodeQ2.append(q2p)
-        const reset_prod2q = document.querySelector('#reset_prod2q');
-        reset_prod2q.onclick = ()=>{
-            prod2q = 0;
-            console.log(prod2q);
-            q2p.remove();
-        }
-    }
-}
-addProdBtn3.onclick = ()=>{
-    prod3q = prod3q + 1;     
-    console.log(`Cantidad de Pancho con bebida: ${prod3q}`);
-    if(prod3q>0){
-        q3p.innerHTML = `<div>Cantidad de Pancho con bebida: ${prod3q}<button id="reset_prod3q" type="button" class="btn-close"></button></div>`;
-        nodeQ3.append(q3p)
-        const reset_prod3q = document.querySelector('#reset_prod3q');
-        reset_prod3q.onclick = ()=>{
-            prod3q = 0;
-            console.log(prod3q);
-            q3p.remove();
-        }
-    }
-}
-addProdBtn4.onclick = ()=>{
-    prod4q = prod4q + 1;     
-    console.log(`Cantidad de Pancho combo: ${prod4q}`);
-    if(prod4q>0){
-        q4p.innerHTML = `<div>Cantidad de Pancho combo: ${prod4q}<button id="reset_prod4q" type="button" class="btn-close"></button></div>`;
-        nodeQ4.append(q4p)
-        const reset_prod4q = document.querySelector('#reset_prod4q');
-        reset_prod4q.onclick = ()=>{
-            prod4q = 0;
-            console.log(prod4q);
-            q4p.remove();
-        }  
-    }
-}
+// addProdBtn2.onclick = ()=>{
+//     prod2q = prod2q + 1;     
+//     console.log(`Cantidad de Pancho con papas fritas: ${prod2q}`);
+//     if(prod2q>0){
+//         q2p.innerHTML = `<div>Cantidad de Pancho con papas fritas: ${prod2q}<button id="reset_prod2q" type="button" class="btn-close"></button></div>`;
+//         nodeQ2.append(q2p)
+//         const reset_prod2q = document.querySelector('#reset_prod2q');
+//         reset_prod2q.onclick = ()=>{
+//             prod2q = 0;
+//             console.log(prod2q);
+//             q2p.remove();
+//         }
+//     }
+// }
+// addProdBtn3.onclick = ()=>{
+//     prod3q = prod3q + 1;     
+//     console.log(`Cantidad de Pancho con bebida: ${prod3q}`);
+//     if(prod3q>0){
+//         q3p.innerHTML = `<div>Cantidad de Pancho con bebida: ${prod3q}<button id="reset_prod3q" type="button" class="btn-close"></button></div>`;
+//         nodeQ3.append(q3p)
+//         const reset_prod3q = document.querySelector('#reset_prod3q');
+//         reset_prod3q.onclick = ()=>{
+//             prod3q = 0;
+//             console.log(prod3q);
+//             q3p.remove();
+//         }
+//     }
+// }
+// addProdBtn4.onclick = ()=>{
+//     prod4q = prod4q + 1;     
+//     console.log(`Cantidad de Pancho combo: ${prod4q}`);
+//     if(prod4q>0){
+//         q4p.innerHTML = `<div>Cantidad de Pancho combo: ${prod4q}<button id="reset_prod4q" type="button" class="btn-close"></button></div>`;
+//         nodeQ4.append(q4p)
+//         const reset_prod4q = document.querySelector('#reset_prod4q');
+//         reset_prod4q.onclick = ()=>{
+//             prod4q = 0;
+//             console.log(prod4q);
+//             q4p.remove();
+//         }  
+//     }
+// }
 
 // Finalizar compra
 
