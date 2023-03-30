@@ -233,6 +233,7 @@ const checkoutBtn = document.querySelector('#checkout_btn');
 // Esta vez simplifico combinando lo visto en el ejercicio en clase con mi desarrollo previo
 
 products.forEach(prod => {
+    // por cada producto en el array genero una card
     divProducts.innerHTML += `<div class="card prod">
         <img src="./assets/img/img_prod${prod.id}.webp" class="card-img-top" alt="${prod.name}">
         <div class="card-body">
@@ -244,6 +245,7 @@ products.forEach(prod => {
     </div>`
 });
 
+// creo carrito vacío, array de botones "agregar" y detalle del carrito
 const cart = [];
 const addProdBtns = document.querySelectorAll('.add_prod_btn');
 const cartDetail = document.querySelector('#cart_detail');
@@ -251,30 +253,65 @@ const cartDetail = document.querySelector('#cart_detail');
 
 addProdBtns.forEach(btn=>{
     btn.onclick = ()=>{
+
+        // guardo el producto seleccionado buscando el id del botón correspondiente
         const prodSel = products.find(prod=>`add_prod_${prod.id}`===btn.id);
         // console.log(prod);
-        const prodToCart = {
-            id: prodSel.id,
-            name: prodSel.name,
-            price: prodSel.price,
-            qty: 1,
-        }
-        const alreadyInCart = cart.findIndex(prod=>prod.id===prodToCart.id);
+
+        // verifico si el producto ya está ne el carrito de compras
+        const alreadyInCart = cart.findIndex(prod=>prod.id===prodSel.id);
+        console.log(alreadyInCart)
         if(alreadyInCart === -1){
+            // si no estaba creo un objeto con las propiedades del producto seleccionado y cantidad = 1 y lo agrego al carrito
+            const prodToCart = {
+                id: prodSel.id,
+                name: prodSel.name,
+                price: prodSel.price,
+                qty: 1,
+            }
             cart.push(prodToCart);
         } else{
+            // si ya estaba en el carrito le sumo una unidad
             cart[alreadyInCart].qty++;
         }
-        console.log(cart);
+        // console.log(cart);
+
+        // activo el botón de checkout
         checkoutBtn.setAttribute('class','btn btn-outline-success');
+
+        // genero un toast que avisa que el producto fue agregado al carrito
         Toastify({
             text:'Producto agregado al carrito',
         }).showToast();
+
+        // reseteo el detalle del carrito
+        cartDetail.innerHTML = `<div id="cart_detail"></div>`
+
+        // creo el detalle del carrito
         cart.forEach(prod=>{
-            cartDetail.innerText += `${prod.name}: ${prod.qty}`;
+            // creo un div por cada producto
+            const cartProd = document.createElement('div');
+            cartProd.innerHTML = `<div>
+                ${prod.name}: ${prod.qty}<button id="reset_qty_${prod.id}" class="btn-close"></button>
+            </div>`;
+            cartDetail.append(cartProd);
+
+            // guardo el botón de reseteo de cantidad
+            const resetQtyBtn = document.querySelector(`#reset_qty_${prod.id}`);
+            resetQtyBtn.onclick = ()=>{
+                // busco el index del producto a eliminar y lo elimino del carrito
+                const resetIndex = cart.findIndex(p=>p.id===prod.id)
+                cart.splice(resetIndex,1);
+                // elimino el detalle del producto del detalle del carrito
+                cartProd.remove();
+                // si no quedan elementos en el carrito inhabilito el botón de checkout
+                if(cart.length===0){
+                    checkoutBtn.setAttribute('class','btn btn-outline-secondary disabled');
+                }
+            }
         });
     }
-})
+});
 
 
 
