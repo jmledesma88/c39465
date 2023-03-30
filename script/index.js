@@ -177,7 +177,7 @@
 
 
 
-// // // Proyecto segunda preentrega
+// // // Proyecto tercera preentrega
 
 // Creo clase producto
 
@@ -186,118 +186,175 @@ class Product {
         this.id = id,
             this.name = name,
             this.desctription = desctription,
-            this.price = price,
-            this.demand = demand
+            this.price = price
+            // this.demand = demand
     }
 }
 
-// Productos
+// // Productos
 
-const panchoSolo = new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3, 0);
-const panchoPapas = new Product(2, 'Pancho con papas fritas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5, 0);
-const panchoBebida = new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4, 0);
-const panchoCombo = new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5, 0);
+// const panchoSolo = new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3, 0);
+// const panchoPapas = new Product(2, 'Pancho con papas fritas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5, 0);
+// const panchoBebida = new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4, 0);
+// const panchoCombo = new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5, 0);
 
 
-// Array productos
+// // Array productos
 
-const products = [panchoSolo, panchoPapas, panchoBebida, panchoCombo];
+// const products = [panchoSolo, panchoPapas, panchoBebida, panchoCombo];
+
+// Esta vez creo los productos directamente en el Array como vimos en clase y voy a quitar la demanda del array y trabajarla en el carrito
+
+const products = [
+    new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3),
+    new Product(2, 'Pancho con papas fritas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5),
+    new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4),
+    new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5),
+]
 
 
 // Agrego cards al menú
 
-const selectNode = document.querySelector('#menu');
+const divProducts = document.querySelector('#menu');
 const checkoutBtn = document.querySelector('#checkout_btn');
 
-let noProdSelected = products.some(prod => prod.demand > 0);
+// let noProdSelected = products.some(prod => prod.demand > 0);
 
-// Función para habilitar el botón finalizar
-function selected(noProdSelected){
-    if (noProdSelected) {
-        return checkoutBtn.setAttribute('class','btn btn-outline-success');
-    } 
-    else {
-        return checkoutBtn.setAttribute('class', 'btn btn-outline-secondary disabled');
-    }        
-}
+// // Función para habilitar el botón finalizar
+// function selected(noProdSelected){
+//     if (noProdSelected) {
+//         return checkoutBtn.setAttribute('class','btn btn-outline-success');
+//     } 
+//     else {
+//         return checkoutBtn.setAttribute('class', 'btn btn-outline-secondary disabled');
+//     }        
+// }
 
-products.forEach((prod) => {
-    const prodCard = document.createElement('div');
-    prodCard.setAttribute('class', 'col');
-    prodCard.innerHTML =
-        `<div class="card prod">
+// Esta vez simplifico combinando lo visto en el ejercicio en clase con mi desarrollo previo
+
+products.forEach(prod => {
+    divProducts.innerHTML += `<div class="card prod">
         <img src="./assets/img/img_prod${prod.id}.webp" class="card-img-top" alt="${prod.name}">
         <div class="card-body">
             <h5 class="card-title">${prod.name}</h5>
             <p class="card-text">Precio: €${prod.price}</p>
             <p class="card-text fst-italic">${prod.desctription}</p>
-            <button id="add_prod_${prod.id}" class="btn btn-outline-primary">Agregar al carrito</button>
+            <button id="add_prod_${prod.id}" class="btn btn-outline-primary add_prod_btn">Agregar al carrito</button>
         </div>
     </div>`
-    selectNode.append(prodCard);
+});
 
-    // intento de resumir cógigo de forma dinámica
-    let qty = `prod${prod.id}q`;
-    // console.log(qty);
-    eval(qty + "= parseInt('0')");
-    // Genero el string del ID y guardo el botón en una const
-    const addProdId = `#add_prod_${prod.id}`;
-    const addProdBtn = document.querySelector(`${addProdId}`);
+const cart = [];
+const addProdBtns = document.querySelectorAll('.add_prod_btn');
+const cartDetail = document.querySelector('#cart_detail');
+// console.log(addProdBtns);
 
-    // Genero el string del ID y guardo el párrafo en una const
-    const prodQtyId = `#quantity${prod.id}`;
-    const nodeQty = document.querySelector(`${prodQtyId}`);
-
-    let qP = `q${prod.id}p`;
-    eval(qP + "= document.createElement('div')");
-    eval(qP + ".setAttribute('class','card-text')");
-    addProdBtn.onclick = () => {
-        prod.demand += 1;
-        console.log(`La demanda del prod ${prod.name} es: ${prod.demand}`);
-        if (prod.demand > 0) {
-            eval(qP + '.innerHTML = `<div>Cantidad de ${prod.name}: ${prod.demand}<button id="reset_prod_${prod.id}" type="button" class="btn-close"></button></div>`');
-            nodeQty.append(eval(qP));
-            const resetQtyId = `#reset_prod_${prod.id}`;
-            const resetQtyBtn = document.querySelector(`${resetQtyId}`);
-            resetQtyBtn.onclick = () => {
-                prod.demand = 0;
-                console.log(`Demanda de ${prod.name} reseteada a ${prod.demand}`);
-                eval(qP + `.remove()`);
-                noProdSelected = products.some(prod => prod.demand > 0);
-                selected(noProdSelected);
-            }
+addProdBtns.forEach(btn=>{
+    btn.onclick = ()=>{
+        const prodSel = products.find(prod=>`add_prod_${prod.id}`===btn.id);
+        // console.log(prod);
+        const prodToCart = {
+            id: prodSel.id,
+            name: prodSel.name,
+            price: prodSel.price,
+            qty: 1,
         }
-        noProdSelected = products.some(prod => prod.demand > 0);
-        selected(noProdSelected);
+        const alreadyInCart = cart.findIndex(prod=>prod.id===prodToCart.id);
+        if(alreadyInCart === -1){
+            cart.push(prodToCart);
+        } else{
+            cart[alreadyInCart].qty++;
+        }
+        console.log(cart);
+        checkoutBtn.setAttribute('class','btn btn-outline-success');
+        Toastify({
+            text:'Producto agregado al carrito',
+        }).showToast();
+        cart.forEach(prod=>{
+            cartDetail.innerText += `${prod.name}: ${prod.qty}`;
+        });
     }
 })
 
-// Calculo importe
-const checkoutCardNode = document.querySelector('#checkout_card');
-const cartDiv = document.querySelector('#cart_div');
-let check = 0;
 
 
-checkoutBtn.onclick = () => {
-    selectNode.remove();
-    cartDiv.remove();
-    for (i = 0; i < products.length; i++) {
-        check += products[i].price * products[i].demand;
-    }
 
-    console.log(check)
-    const checkoutCard = document.createElement('div');
-    checkoutCard.setAttribute('class', 'col');
-    checkoutCard.innerHTML =
-        `<div class="card">
-        <div class="card-body">
-            <h5 class="card-title">El total de su compra es:</h5>
-            <p class="card-text">€${check}</p>
-            <p class="card-text fst-italic">Gracias por su compra.</p>
-        </div>
-    </div>`
-    checkoutCardNode.append(checkoutCard);
+// products.forEach((prod) => {
+//     const prodCard = document.createElement('div');
+//     prodCard.setAttribute('class', 'col');
+//     prodCard.innerHTML =
+//         `<div class="card prod">
+//         <img src="./assets/img/img_prod${prod.id}.webp" class="card-img-top" alt="${prod.name}">
+//         <div class="card-body">
+//             <h5 class="card-title">${prod.name}</h5>
+//             <p class="card-text">Precio: €${prod.price}</p>
+//             <p class="card-text fst-italic">${prod.desctription}</p>
+//             <button id="add_prod_${prod.id}" class="btn btn-outline-primary">Agregar al carrito</button>
+//         </div>
+//     </div>`
+//     divProducts.append(prodCard);
+
+//     let qty = `prod${prod.id}q`;
+//     // console.log(qty);
+//     eval(qty + "= parseInt('0')");
+//     // Genero el string del ID y guardo el botón en una const
+//     const addProdId = `#add_prod_${prod.id}`;
+//     const addProdBtn = document.querySelector(`${addProdId}`);
+
+//     // Genero el string del ID y guardo el párrafo en una const
+//     const prodQtyId = `#quantity${prod.id}`;
+//     const nodeQty = document.querySelector(`${prodQtyId}`);
+
+//     let qP = `q${prod.id}p`;
+//     eval(qP + "= document.createElement('div')");
+//     eval(qP + ".setAttribute('class','card-text')");
+//     addProdBtn.onclick = () => {
+//         prod.demand += 1;
+//         console.log(`La demanda del prod ${prod.name} es: ${prod.demand}`);
+//         if (prod.demand > 0) {
+//             eval(qP + '.innerHTML = `<div>Cantidad de ${prod.name}: ${prod.demand}<button id="reset_prod_${prod.id}" type="button" class="btn-close"></button></div>`');
+//             nodeQty.append(eval(qP));
+//             const resetQtyId = `#reset_prod_${prod.id}`;
+//             const resetQtyBtn = document.querySelector(`${resetQtyId}`);
+//             resetQtyBtn.onclick = () => {
+//                 prod.demand = 0;
+//                 console.log(`Demanda de ${prod.name} reseteada a ${prod.demand}`);
+//                 eval(qP + `.remove()`);
+//                 noProdSelected = products.some(prod => prod.demand > 0);
+//                 selected(noProdSelected);
+//             }
+//         }
+//         noProdSelected = products.some(prod => prod.demand > 0);
+//         selected(noProdSelected);
+//     }
+// })
+
+// // Calculo importe
+// const checkoutCardNode = document.querySelector('#checkout_card');
+// const cartDiv = document.querySelector('#cart_div');
+// let check = 0;
 
 
-    check = 0;
-}
+// checkoutBtn.onclick = () => {
+//     divProducts.remove();
+//     cartDiv.remove();
+//     for (i = 0; i < products.length; i++) {
+//         check += products[i].price * products[i].demand;
+//     }
+
+//     console.log(check)
+//     const checkoutCard = document.createElement('div');
+//     checkoutCard.setAttribute('class', 'col');
+//     checkoutCard.innerHTML =
+//         `<div class="card">
+//         <div class="card-body">
+//             <h5 class="card-title">El total de su compra es:</h5>
+//             <p class="card-text">€${check}</p>
+//             <p class="card-text fst-italic">Gracias por su compra.</p>
+//         </div>
+//     </div>`
+//     checkoutCardNode.append(checkoutCard);
+
+
+//     check = 0;
+// }
