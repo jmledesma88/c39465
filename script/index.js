@@ -213,7 +213,7 @@ const products = [
 ]
 
 
-// Agrego cards al menú
+// Guardo el div de productos y el boton de checkout
 
 const divProducts = document.querySelector('#menu');
 const checkoutBtn = document.querySelector('#checkout_btn');
@@ -248,8 +248,8 @@ products.forEach(prod => {
 // creo carrito vacío, array de botones "agregar" y detalle del carrito
 const cart = [];
 const addProdBtns = document.querySelectorAll('.add_prod_btn');
-const cartDetail = document.querySelector('#cart_detail');
 // console.log(addProdBtns);
+const cartDetail = document.querySelector('#cart_detail');
 
 addProdBtns.forEach(btn=>{
     btn.onclick = ()=>{
@@ -305,6 +305,16 @@ addProdBtns.forEach(btn=>{
                 cart.splice(resetIndex,1);
                 // elimino el detalle del producto del detalle del carrito
                 cartProd.remove();
+
+                // Toast anunciando producto eliminado del carrito
+                Toastify({
+                    text:'Producto eliminado del carrito',
+                    style: {
+                    background: "linear-gradient(90deg, rgba(255,120,120,1) 0%, rgba(255,30,30,1) 100%)",
+                    },
+                    
+                }).showToast();
+        
                 // si no quedan elementos en el carrito inhabilito el botón de checkout
                 if(cart.length===0){
                     checkoutBtn.setAttribute('class','btn btn-outline-secondary disabled');
@@ -314,6 +324,52 @@ addProdBtns.forEach(btn=>{
     }
 });
 
+// const checkoutHead = document.querySelector('#checkout_head');
+// const checkoutBody = document.querySelector('#checkout_body');
+// const checkoutTotal = document.querySelector('#checkout_total');
+
+// asigno el div del carrito a una constante
+const cartDiv = document.querySelector('#cart_div');
+
+checkoutBtn.onclick = ()=>{
+    // remuevo el div de productos del DOM
+    divProducts.remove();
+
+    // creo variables y contenido para el total de la compra y el texto de las filas del resumen de compra
+    let grandTotal = 0;
+    let checkoutBody = "";
+    
+    cart.forEach(prod=>{
+        grandTotal+= prod.qty*prod.price;
+        checkoutBody+= 
+        `<tr>
+            <td>${prod.name}</td>
+            <td>${prod.qty}</td>
+            <td>${prod.price}</td>
+        </tr>`;
+    })
+
+    // modifico el HTML del carrito al resumen de la compra
+    cartDiv.innerHTML = 
+    `<div class="card col-md-6">
+        <table class="table">
+            <thead class="table-secondary">
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${checkoutBody}
+                <tr>
+                    <td colspan="2">El total de tu compra es:</td>
+                    <td>${grandTotal}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>`;
+}
 
 
 
