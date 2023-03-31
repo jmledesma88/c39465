@@ -65,7 +65,7 @@
 //     } else{
 //         cantPapas2 = cantPapas;
 //     }
-// } 
+// }
 
 // console.log('Cantidad de papas total: '+cantPapas);
 // console.log('Cantidad de papas descuento: '+cantPapas2);
@@ -96,7 +96,7 @@
 //     } else{
 //         cantBebidas2 = cantBebidas;
 //     }
-// } 
+// }
 
 // console.log('Cantidad de bebidas total: '+cantBebidas);
 // console.log('Cantidad de bebidas descuento: '+cantBebidas2);
@@ -207,7 +207,7 @@ class Product {
 
 const products = [
     new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3),
-    new Product(2, 'Pancho con papas fritas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5),
+    new Product(2, 'Pancho con papas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5),
     new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4),
     new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5),
 ]
@@ -224,10 +224,10 @@ const checkoutBtn = document.querySelector('#checkout_btn');
 // function selected(noProdSelected){
 //     if (noProdSelected) {
 //         return checkoutBtn.setAttribute('class','btn btn-outline-success');
-//     } 
+//     }
 //     else {
 //         return checkoutBtn.setAttribute('class', 'btn btn-outline-secondary disabled');
-//     }        
+//     }
 // }
 
 // Esta vez simplifico combinando lo visto en el ejercicio en clase con mi desarrollo previo
@@ -291,9 +291,10 @@ addProdBtns.forEach(btn=>{
         cart.forEach(prod=>{
             // creo un div por cada producto
             const cartProd = document.createElement('div');
-            cartProd.innerHTML = `<div>
-                ${prod.name}: ${prod.qty}<button id="reset_qty_${prod.id}" class="btn-close"></button>
-            </div>`;
+            cartProd.innerHTML = `<div class="btn btn-light position-relative cart_prod m-1">
+                ${prod.name}<span class="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-success">
+                ${prod.qty}</span><span id="reset_qty_${prod.id}" class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
+                X</span></div>`;
             cartDetail.append(cartProd);
 
             // guardo el botón de reseteo de cantidad
