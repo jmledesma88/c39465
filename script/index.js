@@ -179,6 +179,54 @@
 
 // // // Proyecto tercera preentrega
 
+const loginForm = document.querySelector('#login_form');
+const loginTitle = document.querySelector('#login_title');
+const userName = document.querySelector('#user_name');
+const userSurname = document.querySelector('#user_surname');
+const userEmail = document.querySelector('#user_email');
+
+const storedUserInfo = JSON.parse(localStorage.getItem('userInfo'));
+console.log(storedUserInfo);
+
+if(storedUserInfo){
+    Swal.fire({
+        // icon: 'success',
+        title: `Bienvenido ${storedUserInfo.name} ${storedUserInfo.surname}`,
+        showDenyButton: true,
+        confirmButtonText: 'Comenzar',
+        denyButtonText: `No soy ${storedUserInfo.name}`,
+        text: '¡Que bueno volver a verte!',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            loginForm.remove();
+        } else if (result.isDenied) {
+            localStorage.removeItem('userInfo');
+            console.log(JSON.parse(localStorage.getItem('userInfo')));
+        }
+      })
+}
+loginForm.onsubmit = (e)=>{
+    e.preventDefault()
+    const userInfo = {
+        name: userName.value,
+        surname: userSurname.value,
+        email: userEmail.value,
+    }
+    localStorage.setItem('userInfo',JSON.stringify(userInfo));
+    loginForm.remove();
+    Swal.fire({
+        // icon: 'success',
+        title: `Bienvenido ${userInfo.name} ${userInfo.surname}`,
+        confirmButtonText: 'Comenzar',
+    })
+}    
+
+
+// Hacer que el menú solo aparezca despues de iniciar sesion
+// mejorar formato del login
+
+
 // Creo clase producto
 
 class Product {
