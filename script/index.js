@@ -1,11 +1,7 @@
-// PROYECTO FINAL
-// Tercera preentrega
+// PROYECTO FINAL JUAN LEDESMA
 
 // selecciono div de login
 const login = document.querySelector('#login');
-
-
-
 
 
 // guardo el formulario en una función para poder usarlo según condiciones
@@ -25,6 +21,8 @@ function Form(){
         </div>
     </form>
     </div>`;
+
+    // guardo los elementos del formulario en variables
     const loginForm = document.querySelector('#login_form');
     const userName = document.querySelector('#user_name');
     const userSurname = document.querySelector('#user_surname');
@@ -37,42 +35,44 @@ function Form(){
             surname: userSurname.value,
             email: userEmail.value,
         }
+
+        // guardo el usuario en storage local
         localStorage.setItem('userInfo',JSON.stringify(userInfo));
+
+        // quito el formulario para hacer lugar al menú
         login.remove();
+
+        // genero alerta de bienvenida
         Swal.fire({
             title: `Bienvenido/a ${userInfo.name} ${userInfo.surname}`,
             confirmButtonText: 'Comenzar',
         })
+        // una vez que se cargan los datos del usuario se carga el menú
         Menu();
     }
 }
 
 
-// Creo clase producto
-class Product {
-    constructor(id, name, desctription, price) {
-        this.id = id,
-        this.name = name,
-        this.desctription = desctription,
-        this.price = price
-    }
-}
+// Inicializo variable productos
+let products;
 
 
-// Esta vez creo los productos directamente en el Array como vimos en clase y voy a quitar la demanda del array y trabajarla en el carrito
-const products = [
-    new Product(1, 'Pancho Solo', '¿Qué más decir? Un pancho, clásico, como el de toda la vida.', 3),
-    new Product(2, 'Pancho con papas', 'El clásico de siempre acompañado de sus mejores amigas, las fritas.', 4.5),
-    new Product(3, 'Pancho con bebida', 'El clásico de siemrpe y la herramienta ideal para bajarlo.', 4),
-    new Product(4, 'Pancho Combo', 'Para los que quieren más, mandale combo.', 5),
-]
+// En lugar de crear una clase Productos y un array a partir de JS como en la tercera preentrega, esta vez recupero los productos de un archivo JSON local con FETCH y guardo el array en la variable products
+fetch("../menu.json")
+    .then((resp)=>{
+        return resp.json()
+    })
+    .then((data)=>{
+        products = data;
+    })
+    .catch((e)=>console.log(e));
 
 
 // Guardo el div de productos
 const divProducts = document.querySelector('#menu');
 
 
-//Guardo el div del carrito
+// Guardo el div del carrito
 const cartDiv = document.querySelector('#cart_div');
 
 
@@ -80,20 +80,21 @@ const cartDiv = document.querySelector('#cart_div');
 function Menu(){
     products.forEach(prod => {
         // por cada producto en el array genero una card
-        divProducts.innerHTML += `<div class="card prod">
+        divProducts.innerHTML += `<div class="col justify-content-center">
+        <div class="card prod">
             <img src="./assets/img/img_prod${prod.id}.webp" class="card-img-top" alt="${prod.name}">
             <div class="card-body">
                 <h5 class="card-title">${prod.name}</h5>
                 <p class="card-text">Precio: €${prod.price}</p>
-                <p class="card-text fst-italic">${prod.desctription}</p>
+                <p class="card-text fst-italic">${prod.description}</p>
                 <button id="add_prod_${prod.id}" class="btn btn-outline-primary add_prod_btn">Agregar al carrito</button>
             </div>
+        </div>
         </div>`
     });
 
     // creo array de botones agregar
     let addProdBtns = document.querySelectorAll('.add_prod_btn');
-    // console.log(addProdBtns)
 
     // Creo el HTML del carrito para poder asignar la interaccion con los botones agregar y el detalle del carrito
     cartDiv.innerHTML = `
@@ -119,11 +120,9 @@ function Menu(){
     
             // guardo el producto seleccionado buscando el id del botón correspondiente
             const prodSel = products.find(prod=>`add_prod_${prod.id}`===btn.id);
-            // console.log(prod);
     
             // verifico si el producto ya está ne el carrito de compras
             const alreadyInCart = cart.findIndex(prod=>prod.id===prodSel.id);
-            // console.log(alreadyInCart)
             if(alreadyInCart === -1){
                 // si no estaba creo un objeto con las propiedades del producto seleccionado y cantidad = 1 y lo agrego al carrito
                 const prodToCart = {
@@ -137,7 +136,6 @@ function Menu(){
                 // si ya estaba en el carrito le sumo una unidad
                 cart[alreadyInCart].qty++;
             }
-            // console.log(cart);
     
             // activo el botón de checkout
             checkoutBtn.setAttribute('class','btn btn-outline-success');
@@ -147,10 +145,10 @@ function Menu(){
                 text:'Producto agregado al carrito',
             }).showToast();
     
-            // reseteo el detalle del carrito
+            // reseteo el detalle del carrito cada vez que agrego un producto
             cartDetail.innerHTML = `<div id="cart_detail"></div>`;
     
-            // creo el detalle del carrito
+            // vuelvo a crear el detalle del carrito cada vez que agrego un producto
             cart.forEach(prod=>{
                 // creo un div por cada producto
                 const cartProd = document.createElement('div');
@@ -160,7 +158,7 @@ function Menu(){
                     X</span></div>`;
                 cartDetail.append(cartProd);
     
-                // guardo el botón de reseteo de cantidad
+                // el div de cada producto incluye un boton para eliminar/resetear la cantidad, lo guardo
                 const resetQtyBtn = document.querySelector(`#reset_qty_${prod.id}`);
                 resetQtyBtn.onclick = ()=>{
                     // busco el index del producto a eliminar y lo elimino del carrito
@@ -232,7 +230,7 @@ function Menu(){
                     </tr>
                 </tbody>
             </table>
-            <p class="text-center px-2 fst-italic">Le enviaremos una confirmación a su correo electrónico cuando el pedido esté listo para ser recogido.</p>
+            <p class="text-center px-2 fst-italic">¡Muchas gracias por su compra! <br>Le enviaremos una confirmación a su correo electrónico cuando el pedido esté listo para ser recogido.</p>
         </div>`;
     }
 
@@ -242,17 +240,10 @@ function Menu(){
 
 
 
+// ACÁ EL USUARIO EMPIEZA A INTERACTUAR CON EL SITIO
 
-
-
-
-
-
-
-// ACÁ EMPIEZA A INTERACTUAR EL USUARIO CON EL SITIO
-// busco si existe info de usuario
+// busco si existe info de usuario en el storage al cargar la página
 const storedUserInfo = JSON.parse(localStorage.getItem('userInfo'));
-// console.log(storedUserInfo);
 
 
 // si existe, recibo al cliente con un alert
@@ -268,7 +259,7 @@ if(storedUserInfo){
 
         }).then((result) => {
         if (result.isConfirmed){
-            // si el usuario confirma ser el guardado en storage se carga el menu
+            // si el usuario confirma ser el que estaba guardado en storage se carga el menu
             Menu();
         } else if (result.isDenied){
             // si el usuario es otro se borra el storage y carga el formulario para ingresar

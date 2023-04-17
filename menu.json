@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "name": "Pancho Solo",
+        "description": "¿Qué más decir? Un pancho, clásico, como el de toda la vida.",
+        "price": "3"
+    },
+    {
+        "id": "2",
+        "name": "Pancho con papas",
+        "description": "El clásico de siempre acompañado de sus mejores amigas, las fritas.",
+        "price": "4.5"
+    },
+    {
+        "id": "3",
+        "name": "Pancho con bebida",
+        "description": "El clásico de siemrpe y la herramienta ideal para bajarlo.",
+        "price": "4"
+    },
+    {
+        "id": "4",
+        "name": "Pancho Combo",
+        "description": "Para los que quieren más, mandale combo.",
+        "price": "5"
+    }
+]
