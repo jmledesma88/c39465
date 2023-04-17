@@ -58,7 +58,7 @@ let products;
 
 
 // En lugar de crear una clase Productos y un array a partir de JS como en la tercera preentrega, esta vez recupero los productos de un archivo JSON local con FETCH y guardo el array en la variable products
-fetch("../json/menu.json")
+fetch("json/menu.json")
     .then((resp)=>{
         return resp.json()
     })
